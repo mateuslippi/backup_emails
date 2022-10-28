@@ -38,6 +38,8 @@ MENSAGEM_USO="
 
         observação: É necessário inserir o nome dos usuários
         em linhas separadas no diretório "/tmp/userlist"\
+
+
 "
 ARQUIVOOK=0
 USERFILE=/tmp/userlist
@@ -47,16 +49,19 @@ if [[ -f "$USERFILE" ]]; then
   ARQUIVOOK=1
 else
   touch $USERFILE
-  echo "Arquivo $USERFILE criado. Por favor, insira os usuários em linhas
-separadas dentro deste arquivo.
+  echo "
+---------------------------------------------------------------------------------------
+O arquivo $USERFILE foi criado. Por favor, insira os usuários em linhas separadas
+dentro deste arquivo. Consulte -h para verficar as opções de comandos disponíveis.
+---------------------------------------------------------------------------------------
   "
-  exit 0
+ exit 0
 fi
 
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
 
-
+NULO=""
 VERSAO="v1.0"
 USU_BRADOK=0
 USU_DADY=0
@@ -77,7 +82,9 @@ criar_usuario_mac() {
              -d /home/$i'.mac-id.bkp'         \
              -p $PASSWORD $i'.mac-id.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
-     echo "Usuário $i já existe."
+       echo "Usuário $i já existe."
+     else
+       echo "Usuário $i criado com sucesso!"
      fi
   done
 }
@@ -89,6 +96,8 @@ criar_usuario_dady() {
              -p $PASSWORD $i'.dadyilha.bkp' > /dev/null 2>&1
     if [ $? != 0 ]; then
       echo "Usuário $i já existe."
+    else
+      echo "Usuário $i criado com sucesso!"
     fi
   done
 }
@@ -99,7 +108,9 @@ criar_usuario_bradok() {
              -d /home/$i'.bradok.bkp'       \
              -p $PASSWORD $i'.bradok.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
-     echo "Usuário $i já existe."
+       echo "Usuário $i já existe."
+     else
+       echo "Usuário $i criado com sucesso!"
      fi
   done
 }
@@ -142,17 +153,17 @@ email_mac() {
 
 #---------------------- EXECUÇÃO ----------------------------------------- #
 case $1 in
-  -h) echo "$MENSAGEM_USO" && exit 0                   ;;
-  -v) echo "$VERSAO" && exit 0                         ;;
-  -b) USU_BRADOK=1                                     ;;
-  -B) BACKUP_BRADOK=1                                  ;;
-  -d) USU_DADY=1                                       ;;
-  -D) BACKUP_DADY=1                                    ;;
-  -m) USU_MAC=1                                        ;;
-  -M) BACKUP_MAC=1                                     ;;
-#  -a) USU_ALL=1                                       ;;
-#  -A) BACKUP_ALL=1                                    ;;
-   *) echo "Seleciona uma opção válida. Consulte o -h" ;;
+  -h) echo "$MENSAGEM_USO" && exit 0                              ;;
+  -v) echo "$VERSAO" && exit 0                                    ;;
+  -b) USU_BRADOK=1                                                ;;
+  -B) BACKUP_BRADOK=1                                             ;;
+  -d) USU_DADY=1                                                  ;;
+  -D) BACKUP_DADY=1                                               ;;
+  -m) USU_MAC=1                                                   ;;
+  -M) BACKUP_MAC=1                                                ;;
+#  -a) USU_ALL=1                                                  ;;
+#  -A) BACKUP_ALL=1                                               ;;
+   *) echo "Por favor, insira um parâmetro de ação (Consulte -h)" ;;
 esac
 
 #Execução da criação de usuários respectivos à cada empresa.
