@@ -50,6 +50,7 @@ else
   echo "Arquivo $USERFILE criado. Por favor, insira os usuários em linhas
 separadas dentro deste arquivo.
   "
+  exit 0
 fi
 
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
