@@ -25,10 +25,16 @@ MENSAGEM_USO="
 
         -h - Menu de ajuda
         -v - Versão do programa
-        -a - Realiza o backup em todas as empresas (Futuro)
-        -b - Realiza o backup da Bradok
-        -d - Realiza o backup da DadyIlha
-        -m - Realiza o backup da Mac-id
+
+        -B - Realiza o backup da Bradok
+        -D - Realiza o backup da DadyIlha
+        -M - Realiza o backup da Mac-id
+        -A - Realiza o backup em todas as empresas (Futuro)
+
+        -b realiza a criação de usuário para Bradok
+        -d realiza a criação de usuário para DadyIlha
+        -m realiza a criação de usuário para Mac-id
+        -a realiza a criação de usuário para todas as empresas (Futuro)
 
         observação: É necessário inserir o nome dos usuários
         em linhas separadas no diretório "/tmp/userlist"\
@@ -41,17 +47,24 @@ if [[ -f "$USERFILE" ]]; then
   ARQUIVOOK=1
 else
   touch $USERFILE
-  echo "Arquivo $USERFILE criado. Por favor, execute novamente."
+  echo "Arquivo $USERFILE criado. Por favor, insira os usuários em linhas
+separadas dentro deste arquivo.
+  "
 fi
+
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
 
 
 VERSAO="v1.0"
-CHAVE_BRADOK=0
-CHAVE_DADY=0
-CHAVE_MAC=0
-CHAVE_ALL=0s
+USU_BRADOK=0
+USU_DADY=0
+USU_MAC=0
+#USU_ALL=0
+BACKUP_BRADOK=0
+BACKUP_DADY=0
+BACKUP_MAC=0
+#BACKUP_ALL=0
 
 #-----------------------TESTES--------------------------------------------- #
 
@@ -59,30 +72,35 @@ CHAVE_ALL=0s
 
 criar_usuario_mac() {
   for i in $USERNAME; do
-     useradd -m                         \
-             -d /home/$i'.mac-id.bkp'   \
-             -p $PASSWORD               \;
-
+     useradd -m                               \
+             -d /home/$i'.mac-id.bkp'         \
+             -p $PASSWORD $i'.mac-id.bkp' > /dev/null 2>&1
+     if [ $? != 0 ]; then
+     echo "Usuário $i já existe."
+     fi
   done
-
 }
 
 criar_usuario_dady() {
   for i in $USERNAME; do
-     useradd -m                         \
-             -d /home/$i'.dadyilha.bkp' \
-             -p $PASSWORD               \;
+     useradd -m                              \
+             -d /home/$i'.dadyilha.bkp'      \
+             -p $PASSWORD $i'.dadyilha.bkp' > /dev/null 2>&1
+    if [ $? != 0 ]; then
+      echo "Usuário $i já existe."
+    fi
   done
-
 }
 
 criar_usuario_bradok() {
   for i in $USERNAME; do
-     useradd -m                        \
-             -d /home/$i'.bradok.bkp'  \
-             -p $PASSWORD              \;
+     useradd -m                             \
+             -d /home/$i'.bradok.bkp'       \
+             -p $PASSWORD $i'.bradok.bkp' > /dev/null 2>&1
+     if [ $? != 0 ]; then
+     echo "Usuário $i já existe."
+     fi
   done
-
 }
 
 email_dady() {
@@ -96,6 +114,7 @@ email_dady() {
                    --nossl2                               \;
   done < "$USERFILE"
 }
+
 email_bradok() {
   while read p; do
           imapsync --host1 'sh-pro32.hostgator.com.br'    \
@@ -105,8 +124,9 @@ email_bradok() {
                    --user2 $p'.bradok.bkp'                \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \;
-  done < "$USERFILE"
+  done <"$USERFILE"
 }
+
 email_mac() {
   while read p; do
           imapsync --host1 'sh-pro32.hostgator.com.br'    \
@@ -116,27 +136,33 @@ email_mac() {
                    --user2 $p'.mac-id.bkp'                \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \;
-  done < "$USERFILE"
+  done <"$USERFILE"
 }
 
 #---------------------- EXECUÇÃO ----------------------------------------- #
-criar_usuario_dady
+case $1 in
+  -h) echo "$MENSAGEM_USO" && exit 0                   ;;
+  -v) echo "$VERSAO" && exit 0                         ;;
+  -b) USU_BRADOK=1                                     ;;
+  -B) BACKUP_BRADOK=1                                  ;;
+  -d) USU_DADY=1                                       ;;
+  -D) BACKUP_DADY=1                                    ;;
+  -m) USU_MAC=1                                        ;;
+  -M) BACKUP_MAC=1                                     ;;
+#  -a) USU_ALL=1                                       ;;
+#  -A) BACKUP_ALL=1                                    ;;
+   *) echo "Seleciona uma opção válida. Consulte o -h" ;;
+esac
 
+#Execução da criação de usuários respectivos à cada empresa.
+[ $USU_DADY -eq 1 ] && criar_usuario_dady && exit 0
+[ $USU_BRADOK -eq 1 ] && criar_usuario_bradok && exit 0
+[ $USU_MAC -eq 1 ] && criar_usuario_mac && exit 0
 
-
-# case $1 in
-#   -h) echo "$MENSAGEM_USO" && exit 0                   ;;
-#   -v) echo "$VERSAO" && exit 0                         ;;
-#   -d) CHAVE_DADY=1                                     ;;
-#   -b) CHAVE_BRADOK=1                                   ;;
-#   -c) CHAVE_MAC=1                                      ;;
-#   -a) CHAVE_ALL=1                                      ;;
-#    *) echo "Seleciona uma opção válida. Consulte o -h" ;;
-# esac
-#
-# [ $CHAVE_DADY -eq 1 ] && email_dady && exit 0
-# [ $CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0
-# [ $CHAVE_MAC -eq 1 ] && email_mac && exit 0
+#Execução da sincronia(backup) de e-mails respectivos à cada empresa.
+[ $BACKUP_DADY -eq 1 ] && email_dady && exit 0
+[ $BACKUP_BRADOK -eq 1 ] && email_bradok && exit 0
+[ $BACKUP_MAC -eq 1 ] && email_mac && exit 0
 
 # PROJETO MULTITHREADING:
 # if [ $CHAVE_ALL -eq 1 ]; then
