@@ -41,6 +41,7 @@ if [[ -f "$USERFILE" ]]; then
   ARQUIVOOK=1
 else
   touch $USERFILE
+  echo "Arquivo $USERFILE criado. Por favor, execute novamente."
 fi
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
