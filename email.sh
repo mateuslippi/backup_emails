@@ -125,8 +125,8 @@ esac
 
 if [ $CHAVE_ALL -eq 1 ]; then
   email_dady
-  email_bradok
-  email_mac
+
+fi
 
 
 
