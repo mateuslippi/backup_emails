@@ -120,22 +120,22 @@ email_mac() {
 
 #---------------------- EXECUÇÃO ----------------------------------------- #
 criar_usuario_dady
-criar_usuario_mac
-criar_usuario_bradok
 
-case $1 in
-  -h) echo "$MENSAGEM_USO" && exit 0                   ;;
-  -v) echo "$VERSAO" && exit 0                         ;;
-  -d) CHAVE_DADY=1                                     ;;
-  -b) CHAVE_BRADOK=1                                   ;;
-  -c) CHAVE_MAC=1                                      ;;
-  -a) CHAVE_ALL=1                                      ;;
-   *) echo "Seleciona uma opção válida. Consulte o -h" ;;
-esac
 
-[ $CHAVE_DADY -eq 1 ] && email_dady && exit 0
-[ $CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0
-[ $CHAVE_MAC -eq 1 ] && email_mac && exit 0
+
+# case $1 in
+#   -h) echo "$MENSAGEM_USO" && exit 0                   ;;
+#   -v) echo "$VERSAO" && exit 0                         ;;
+#   -d) CHAVE_DADY=1                                     ;;
+#   -b) CHAVE_BRADOK=1                                   ;;
+#   -c) CHAVE_MAC=1                                      ;;
+#   -a) CHAVE_ALL=1                                      ;;
+#    *) echo "Seleciona uma opção válida. Consulte o -h" ;;
+# esac
+#
+# [ $CHAVE_DADY -eq 1 ] && email_dady && exit 0
+# [ $CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0
+# [ $CHAVE_MAC -eq 1 ] && email_mac && exit 0
 
 # PROJETO MULTITHREADING:
 # if [ $CHAVE_ALL -eq 1 ]; then
