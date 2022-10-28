@@ -123,7 +123,8 @@ email_dady() {
                    --host2 'localhost'                    \
                    --user2 $p'.dadyilha.bkp'              \
                    --password2 'Abc242526@2'              \
-                   --nossl2                               \;
+                   --nossl2                               \
+                   
   done < "$USERFILE"
 }
 
@@ -135,7 +136,8 @@ email_bradok() {
                    --host2 'localhost'                    \
                    --user2 $p'.bradok.bkp'                \
                    --password2 'Abc242526@2'              \
-                   --nossl2                               \;
+                   --nossl2                               \
+
   done <"$USERFILE"
 }
 
@@ -147,7 +149,8 @@ email_mac() {
                    --host2 'localhost'                    \
                    --user2 $p'.mac-id.bkp'                \
                    --password2 'Abc242526@2'              \
-                   --nossl2                               \;
+                   --nossl2                               \
+
   done <"$USERFILE"
 }
 
