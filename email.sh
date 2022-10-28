@@ -80,7 +80,8 @@ criar_usuario_mac() {
   for i in $USERNAME; do
      useradd -m                               \
              -d /home/$i'.mac-id.bkp'         \
-             -p $PASSWORD $i'.mac-id.bkp' > /dev/null 2>&1
+             -p $PASSWORD $i'.mac-id.bkp'
+             #> /dev/null 2>&1
      if [ $? != 0 ]; then
        echo "Usuário $i'.mac-id.bkp' já existe."
      else
@@ -124,7 +125,7 @@ email_dady() {
                    --user2 $p'.dadyilha.bkp'              \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \
-                   
+
   done < "$USERFILE"
 }
 
