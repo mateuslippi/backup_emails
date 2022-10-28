@@ -119,15 +119,14 @@ case $1 in
    *) echo "Seleciona uma opção válida. Consulte o -h" ;;
 esac
 
-#[ CHAVE_DADY -eq 1 ] && email_dady() && exit 0 ;;
-#[ CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0 ;;
-#[ CHAVE_MAC -eq 1 ] && email_mac() && exit 0 ;;
+[ CHAVE_DADY -eq 1 ] && email_dady() && exit 0
+[ CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0
+[ CHAVE_MAC -eq 1 ] && email_mac() && exit 0
 
 if [ $CHAVE_ALL -eq 1 ]; then
   email_dady
-
+  email_mac
+  email_bradok
 fi
-
-
 
 #------------------------------------------------------------------------- #
