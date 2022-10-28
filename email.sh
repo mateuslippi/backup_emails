@@ -130,9 +130,9 @@ case $1 in
    *) echo "Seleciona uma opção válida. Consulte o -h" ;;
 esac
 
-[ $CHAVE_DADY -eq 1 ] && email_dady && exit
-[ $CHAVE_BRADOK -eq 1 ] && email_bradok && exit
-[ $CHAVE_MAC -eq 1 ] && email_mac && exit 
+[ $CHAVE_DADY -eq 1 ] && email_dady
+[ $CHAVE_BRADOK -eq 1 ] && email_bradok
+[ $CHAVE_MAC -eq 1 ] && email_mac
 
 # PROJETO MULTITHREADING:
 # if [ $CHAVE_ALL -eq 1 ]; then
