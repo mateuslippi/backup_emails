@@ -15,7 +15,7 @@
 # ------------------------------------------------------------------------ #
 # Histórico:
 #
-#   v1.0 25/10/2022, Mateus:
+#   v1.0 28/10/2022, Mateus:
 # ------------------------------------------------------------------------ #
 # Testado em:
 #   bash 5.1.16(1)-release
@@ -25,11 +25,15 @@ MENSAGEM_USO="
 
         -h - Menu de ajuda
         -v - Versão do programa
-        -a - Realiza o backup em todas as empresas
+        -a - Realiza o backup em todas as empresas (Futuro)
         -b - Realiza o backup da Bradok
         -d - Realiza o backup da DadyIlha
         -m - Realiza o backup da Mac-id
-"DADY
+
+        observação: É necessário inserir o nome dos usuários
+        em linhas separadas no diretório "/tmp/userlist"\
+"
+ARQUIVOOK=0
 USERFILE=/tmp/userlist
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
@@ -42,7 +46,12 @@ CHAVE_MAC=0
 CHAVE_ALL=0s
 
 #-----------------------TESTES--------------------------------------------- #
-
+#Verificar a existência do arquivo que contém os usuários e cria o arquivo caso não exista.
+if [[ -f "$USERFILE" ]]; then
+  ARQUIVOOK=1
+else
+  touch $USERFILE
+fi
 #-----------------------FUNÇÕES-------------------------------------------- #
 
 criar_usuario_mac() {
@@ -77,34 +86,34 @@ email_dady() {
   while read p; do
           imapsync --host1 'imap.umbler.com'              \
                    --user1 $p'@dadyilha.com.br'           \
-                   --password1 '@?SueTam#2' --ssl1 --sslargs1 "SSL_verify_mode=1"  \
+                   --password1 'Excluido@2' --ssl1 --sslargs1 "SSL_verify_mode=1"  \
                    --host2 'localhost'                    \
                    --user2 $p'.dadyilha.bkp'              \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \;
-  done < users
+  done < "$USERFILE"
 }
 email_bradok() {
   while read p; do
           imapsync --host1 'sh-pro32.hostgator.com.br'    \
                    --user1 $p'@bradok.com.br'             \
-                   --password1 '@?SueTam#2' --ssl1 --sslargs1 "SSL_verify_mode=1"  \
+                   --password1 'Excluido@2' --ssl1 --sslargs1 "SSL_verify_mode=1"  \
                    --host2 'localhost'                    \
                    --user2 $p'.bradok.bkp'                \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \;
-  done < users
+  done < "$USERFILE"
 }
 email_mac() {
   while read p; do
           imapsync --host1 'sh-pro32.hostgator.com.br'    \
                    --user1 $p'@mac-id.com.br'             \
-                   --password1 '@?SueTam#2' --ssl1 --sslargs1 "SSL_verify_mode=1"  \
+                   --password1 'Excluido@2' --ssl1 --sslargs1 "SSL_verify_mode=1"  \
                    --host2 'localhost'                    \
                    --user2 $p'.mac-id.bkp'                \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \;
-  done < users
+  done < "$USERFILE"
 }
 
 #---------------------- EXECUÇÃO ----------------------------------------- #
@@ -119,14 +128,15 @@ case $1 in
    *) echo "Seleciona uma opção válida. Consulte o -h" ;;
 esac
 
-[ CHAVE_DADY -eq 1 ] && email_dady() && exit 0
-[ CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0
-[ CHAVE_MAC -eq 1 ] && email_mac() && exit 0
+[ $CHAVE_DADY -eq 1 ] && email_dady && exit 0
+[ $CHAVE_BRADOK -eq 1 ] && email_bradok && exit 0
+[ $CHAVE_MAC -eq 1 ] && email_mac && exit 0
 
-if [ $CHAVE_ALL -eq 1 ]; then
-  email_dady
-  email_mac
-  email_bradok
-fi
+# PROJETO MULTITHREADING:
+# if [ $CHAVE_ALL -eq 1 ]; then
+#   email_dady
+#   email_mac
+#   email_bradok
+# fi
 
 #------------------------------------------------------------------------- #
