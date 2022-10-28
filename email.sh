@@ -35,6 +35,13 @@ MENSAGEM_USO="
 "
 ARQUIVOOK=0
 USERFILE=/tmp/userlist
+
+#Verificar a existência do arquivo que contém os usuários e cria o arquivo caso não exista.
+if [[ -f "$USERFILE" ]]; then
+  ARQUIVOOK=1
+else
+  touch $USERFILE
+fi
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
 
@@ -46,12 +53,7 @@ CHAVE_MAC=0
 CHAVE_ALL=0s
 
 #-----------------------TESTES--------------------------------------------- #
-#Verificar a existência do arquivo que contém os usuários e cria o arquivo caso não exista.
-if [[ -f "$USERFILE" ]]; then
-  ARQUIVOOK=1
-else
-  touch $USERFILE
-fi
+
 #-----------------------FUNÇÕES-------------------------------------------- #
 
 criar_usuario_mac() {
