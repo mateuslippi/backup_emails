@@ -127,9 +127,9 @@ email_dady() {
                    --user2 $p'.dadyilha.bkp'              \
                    --password2 'Abc242526@2'              \
                    --nossl2                               \
-
+                   
+    echo "Sincronização/Backup de e-mails do usuário $p'@dadyilha.com.br com o servidor local concuída."
   done < "$USERFILE"
-  echo "Sincronização/Backup de e-mails do usuário $p'@dadyilha.com.br com o servidor local concuída."
 }
 
 email_bradok() {
@@ -142,8 +142,8 @@ email_bradok() {
                    --password2 'Abc242526@2'              \
                    --nossl2                               \
 
-  done <"$USERFILE"
   echo "Sincronização/Backup de e-mails do usuário $p'@bradok.com.br com o servidor local concuída."
+  done <"$USERFILE"
 }
 
 email_mac() {
@@ -156,8 +156,8 @@ email_mac() {
                    --password2 'Abc242526@2'              \
                    --nossl2                               \
 
-  done <"$USERFILE"
   echo "Sincronização/Backup de e-mails do usuário $p'@mac-id.com.br com o servidor local concuída."
+  done <"$USERFILE"
 }
 
 #---------------------- EXECUÇÃO ----------------------------------------- #
