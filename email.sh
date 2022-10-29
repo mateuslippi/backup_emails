@@ -193,7 +193,8 @@ fi
 [ $BACKUP_MAC -eq 1 ] && email_mac && exit 0
 
 if [ $BACKUP_ALL -eq 1 ]; then
-  #Verificar se é executado um de cada vez, ou se são colocados todos em bg
+  #Atente-se, é criado um processo filho para cada um dos 3 abaixo, simultaneamtente.
+  #Tome cuidado pois matar o processo pai, não cancela-rá os processos filhos.
   email_bradok > bradok.log &
   email_dady > dady.log &
   email_mac > mac-id.log &
