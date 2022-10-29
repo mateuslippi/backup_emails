@@ -143,7 +143,7 @@ email_bradok() {
                    --nossl2                               \
 
   echo "Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída."
-  > $p'.mac-id'.log 2>&1 ;
+  > $p'.mac-id'.log;
   done <"$USERFILE"
 }
 
