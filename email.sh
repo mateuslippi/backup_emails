@@ -80,8 +80,7 @@ criar_usuario_mac() {
   for i in $USERNAME; do
      useradd -m                               \
              -d /home/$i'.mac-id.bkp'         \
-             -p $PASSWORD $i'.mac-id.bkp'
-             #> /dev/null 2>&1
+             -p "$PASSWORD" $i'.mac-id.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
        echo "Usuário $i'.mac-id.bkp' já existe."
      else
@@ -94,7 +93,7 @@ criar_usuario_dady() {
   for i in $USERNAME; do
      useradd -m                              \
              -d /home/$i'.dadyilha.bkp'      \
-             -p $PASSWORD $i'.dadyilha.bkp' > /dev/null 2>&1
+             -p "$PASSWORD" $i'.dadyilha.bkp' > /dev/null 2>&1
     if [ $? != 0 ]; then
       echo "Usuário $i'.dadyilha.bkp' já existe."
     else
@@ -107,7 +106,7 @@ criar_usuario_bradok() {
   for i in $USERNAME; do
      useradd -m                             \
              -d /home/$i'.bradok.bkp'       \
-             -p $PASSWORD $i'.bradok.bkp' > /dev/null 2>&1
+             -p "$PASSWORD" $i'.bradok.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
        echo "Usuário $i'.bradok.bkp' já existe."
      else
