@@ -125,10 +125,10 @@ email_dady() {
                    --host2 'localhost'                    \
                    --user2 $p'.dadyilha.bkp'              \
                    --password2 'Abc242526@2'              \
-                   --nossl2                               \
+                   --nossl2 > $p'.dadyilha.bkp'.log 2>&1
 
-  echo "Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída."
-  > $p'.mac-id'.log 2>&1 ;
+  echo -e "Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída." \
+  >> $p'.dadyilha.bkp'.log
   done < "$USERFILE"
 }
 
@@ -140,10 +140,10 @@ email_bradok() {
                    --host2 'localhost'                    \
                    --user2 $p'.bradok.bkp'                \
                    --password2 'Abc242526@2'              \
-                   --nossl2                               \
+                   --nossl2 > $p'.bradok.bkp'.log 2>&1
 
-  echo "Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída."
-  > $p'.mac-id'.log;
+  echo -e "Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída." \
+  >> $p'.bradok.bkp'.log
   done <"$USERFILE"
 }
 
@@ -155,10 +155,10 @@ email_mac() {
                    --host2 'localhost'                    \
                    --user2 $p'.mac-id.bkp'                \
                    --password2 'Abc242526@2'              \
-                   --nossl2                               \
+                   --nossl2 > $p'.mac-id.bkp'.log 2>&1
 
-  echo "Sincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída."
-  > $p'.mac-id'.log ;
+  echo -e "Sincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída." \
+  >> $p'.mac-id.bkp'.log
   done <"$USERFILE"
 }
 
