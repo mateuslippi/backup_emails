@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 #
-# syncAccountsAll.sh - Verifica a última cotação do Bitcoin
+# emails.sh - Automatização Backup de e-mails.
 #
 # Autor:      Mateus Lippi
 # Manutenção: Mateus Lippi
 #
 # ------------------------------------------------------------------------ #
-#  Este programa irá realizar o backup de e-mails que temos na empresa
-# de acordo com o parâmetro passado pelo usuário.
+#  Este programa irá realizar a criação de usuários, deletamento,
+# e o backup de e-mails que temos na empresa de acordo com os parâmetros
+# passados pelos usuários.
 #
 #  Exemplos:
-#      $ ./syncAccountsAll.sh -a
+#      $ ./emails.sh -a
 #      Fará o backup dos emails da empresa.
 # ------------------------------------------------------------------------ #
 # Histórico:
 #
-#   v1.0 28/10/2022, Mateus:
+#   v1.0 29/10/2022, Mateus:
 # ------------------------------------------------------------------------ #
 # Testado em:
 #   bash 5.1.16(1)-release
@@ -35,6 +36,8 @@ MENSAGEM_USO="
         -d realiza a criação de usuário para DadyIlha
         -m realiza a criação de usuário para Mac-id
         -a realiza a criação de usuário para todas as empresas (Futuro)
+
+
 
         observação: É necessário inserir o nome dos usuários
         em linhas separadas no diretório "/tmp/userlist"\
@@ -66,11 +69,11 @@ VERSAO="v1.0"
 USU_BRADOK=0
 USU_DADY=0
 USU_MAC=0
-#USU_ALL=0
+USU_ALL=0
 BACKUP_BRADOK=0
 BACKUP_DADY=0
 BACKUP_MAC=0
-#BACKUP_ALL=0
+BACKUP_ALL=0
 
 #-----------------------TESTES--------------------------------------------- #
 
@@ -126,6 +129,7 @@ email_dady() {
                    --nossl2                               \
 
   done < "$USERFILE"
+  echo "Sincronização/Backup de e-mails do usuário $p'@dadyilha.com.br com o servidor local concuída."
 }
 
 email_bradok() {
@@ -139,6 +143,7 @@ email_bradok() {
                    --nossl2                               \
 
   done <"$USERFILE"
+  echo "Sincronização/Backup de e-mails do usuário $p'@bradok.com.br com o servidor local concuída."
 }
 
 email_mac() {
@@ -152,6 +157,7 @@ email_mac() {
                    --nossl2                               \
 
   done <"$USERFILE"
+  echo "Sincronização/Backup de e-mails do usuário $p'@mac-id.com.br com o servidor local concuída."
 }
 
 #---------------------- EXECUÇÃO ----------------------------------------- #
@@ -164,8 +170,8 @@ case $1 in
   -D) BACKUP_DADY=1                                               ;;
   -m) USU_MAC=1                                                   ;;
   -M) BACKUP_MAC=1                                                ;;
-#  -a) USU_ALL=1                                                  ;;
-#  -A) BACKUP_ALL=1                                               ;;
+  -a) USU_ALL=1                                                   ;;
+  -A) BACKUP_ALL=1                                                ;;
    *) echo "Por favor, insira um parâmetro de ação (Consulte -h)" ;;
 esac
 
@@ -174,16 +180,24 @@ esac
 [ $USU_BRADOK -eq 1 ] && criar_usuario_bradok && exit 0
 [ $USU_MAC -eq 1 ] && criar_usuario_mac && exit 0
 
+if [ $USU_ALL -eq 1 ]; then
+  criar_usuario_bradok &
+  criar_usuario_dady &
+  criar_usuario_mac &
+  wait
+fi
+
 #Execução da sincronia(backup) de e-mails respectivos à cada empresa.
-[ $BACKUP_DADY -eq 1 ] && email_dady && exit 0
+[ $BACKUP_DADY -eq 1 ] && email_dady && echo exit 0
 [ $BACKUP_BRADOK -eq 1 ] && email_bradok && exit 0
 [ $BACKUP_MAC -eq 1 ] && email_mac && exit 0
 
-# PROJETO MULTITHREADING:
-# if [ $CHAVE_ALL -eq 1 ]; then
-#   email_dady
-#   email_mac
-#   email_bradok
-# fi
+if [ $BACKUP_ALL -eq 1 ]; then
+  #Verificar se é executado um de cada vez, ou se são colocados todos em bg
+  email_bradok > bradok.log &
+  email_dady > dady.log &
+  email_mac > mac-id.log &
+  wait
+fi
 
 #------------------------------------------------------------------------- #
