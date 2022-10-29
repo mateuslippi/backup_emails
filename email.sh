@@ -59,7 +59,7 @@ dentro deste arquivo. Consulte -h para verficar as opções de comandos disponí
 fi
 
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
-PASSWORD='6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
+PASSWORD='$6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
 
 NULO=""
 VERSAO="v1.0"
@@ -80,8 +80,7 @@ criar_usuario_mac() {
   for i in $USERNAME; do
      useradd -m                               \
              -d /home/$i'.mac-id.bkp'         \
-             -p "Abc242526@2" $i'.mac-id.bkp'
-             # /dev/null 2>&1
+             -p $PASSWORD $i'.mac-id.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
        echo "Usuário $i'.mac-id.bkp' já existe."
      else
@@ -94,7 +93,7 @@ criar_usuario_dady() {
   for i in $USERNAME; do
      useradd -m                              \
              -d /home/$i'.dadyilha.bkp'      \
-             -p '6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1' $i'.dadyilha.bkp' > /dev/null 2>&1
+             -p $PASSWORD $i'.dadyilha.bkp' > /dev/null 2>&1
     if [ $? != 0 ]; then
       echo "Usuário $i'.dadyilha.bkp' já existe."
     else
@@ -107,7 +106,7 @@ criar_usuario_bradok() {
   for i in $USERNAME; do
      useradd -m                             \
              -d /home/$i'.bradok.bkp'       \
-             -p '6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1' $i'.bradok.bkp' > /dev/null 2>&1
+             -p $PASSWORD $i'.bradok.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
        echo "Usuário $i'.bradok.bkp' já existe."
      else
