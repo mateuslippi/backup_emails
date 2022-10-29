@@ -64,7 +64,6 @@ fi
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='$6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
 
-NULO=""
 VERSAO="v1.0"
 USU_BRADOK=0
 USU_DADY=0
@@ -128,7 +127,8 @@ email_dady() {
                    --password2 'Abc242526@2'              \
                    --nossl2                               \
 
-    echo "Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída."
+  echo "Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída."
+  > $p'.mac-id'.log 2>&1 ;
   done < "$USERFILE"
 }
 
@@ -143,6 +143,7 @@ email_bradok() {
                    --nossl2                               \
 
   echo "Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída."
+  > $p'.mac-id'.log 2>&1 ;
   done <"$USERFILE"
 }
 
@@ -157,6 +158,7 @@ email_mac() {
                    --nossl2                               \
 
   echo "Sincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída."
+   > $p'.mac-id'.log 2>&1 ;
   done <"$USERFILE"
 }
 
@@ -172,7 +174,7 @@ case $1 in
   -M) BACKUP_MAC=1                                                ;;
   -a) USU_ALL=1                                                   ;;
   -A) BACKUP_ALL=1                                                ;;
-   *) echo "Por favor, insira um parâmetro de ação (Consulte -h)" ;;
+   *) echo "Por favor, insira um parâmetro de ação correto. (Consulte -h)" ;;
 esac
 
 #Execução da criação de usuários respectivos à cada empresa.
@@ -188,16 +190,16 @@ if [ $USU_ALL -eq 1 ]; then
 fi
 
 #Execução da sincronia(backup) de e-mails respectivos à cada empresa.
-[ $BACKUP_DADY -eq 1 ] && email_dady && echo exit 0
+[ $BACKUP_DADY -eq 1 ] && email_dady && exit 0
 [ $BACKUP_BRADOK -eq 1 ] && email_bradok && exit 0
 [ $BACKUP_MAC -eq 1 ] && email_mac && exit 0
 
 if [ $BACKUP_ALL -eq 1 ]; then
   #Atente-se, é criado um processo filho para cada um dos 3 abaixo, simultaneamtente.
-  #Tome cuidado pois matar o processo pai, não cancela-rá os processos filhos.
-  email_bradok > bradok.log &
-  email_dady > dady.log &
-  email_mac > mac-id.log &
+  #Tome cuidado pois matar o processo pai, não cancelará os processos filhos.
+  email_bradok &
+  email_dady &
+  email_mac &
   wait
 fi
 
