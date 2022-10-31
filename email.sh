@@ -30,12 +30,12 @@ MENSAGEM_USO="
         -B - Realiza o backup da Bradok
         -D - Realiza o backup da DadyIlha
         -M - Realiza o backup da Mac-id
-        -A - Realiza o backup em todas as empresas (Futuro)
+        -A - Realiza o backup em todas as empresas
 
         -b realiza a criação de usuário para Bradok
         -d realiza a criação de usuário para DadyIlha
         -m realiza a criação de usuário para Mac-id
-        -a realiza a criação de usuário para todas as empresas (Futuro)
+        -a realiza a criação de usuário para todas as empresas
 
 
 
@@ -63,6 +63,9 @@ fi
 
 USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='$6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
+COR_TEXTO_USU="\033[35;1m"
+COR_TEXTO_BKP="\033[36;1;7m"
+
 
 VERSAO="v1.0"
 USU_BRADOK=0
@@ -84,9 +87,9 @@ criar_usuario_mac() {
              -d /home/$i'.mac-id.bkp'         \
              -p $PASSWORD $i'.mac-id.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
-       echo "Usuário $i'.mac-id.bkp' já existe."
+       echo -e "${COR_TEXTO_USU}Usuário $i'.mac-id.bkp' já existe."
      else
-       echo "Usuário $i'.mac-id.bkp' criado com sucesso!"
+       echo -e "${COR_TEXTO_USU}Usuário $i'.mac-id.bkp' criado com sucesso!"
      fi
   done
 }
@@ -97,9 +100,9 @@ criar_usuario_dady() {
              -d /home/$i'.dadyilha.bkp'      \
              -p $PASSWORD $i'.dadyilha.bkp' > /dev/null 2>&1
     if [ $? != 0 ]; then
-      echo "Usuário $i'.dadyilha.bkp' já existe."
+      echo -e "${COR_TEXTO_USU}Usuário $i'.dadyilha.bkp' já existe."
     else
-      echo "Usuário $i'.dadyilha.bkp' criado com sucesso!"
+      echo -e "${COR_TEXTO_USU}Usuário $i'.dadyilha.bkp' criado com sucesso!"
     fi
   done
 }
@@ -110,9 +113,9 @@ criar_usuario_bradok() {
              -d /home/$i'.bradok.bkp'       \
              -p $PASSWORD $i'.bradok.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
-       echo "Usuário $i'.bradok.bkp' já existe."
+       echo -e "${COR_TEXTO_USU}Usuário $i'.bradok.bkp' já existe."
      else
-       echo "Usuário $i'.bradok.bkp' criado com sucesso!"
+       echo -e "${COR_TEXTO_USU}Usuário $i'.bradok.bkp' criado com sucesso!"
      fi
   done
 }
@@ -127,7 +130,7 @@ email_dady() {
                    --password2 'Abc242526@2'              \
                    --nossl2 > $p'.dadyilha.bkp'.log 2>&1
 
-  echo -e "Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída." \
+  echo -e "${COR_TEXTO_BKP}Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída." \
   >> $p'.dadyilha.bkp'.log
   done < "$USERFILE"
 }
@@ -142,7 +145,7 @@ email_bradok() {
                    --password2 'Abc242526@2'              \
                    --nossl2 > $p'.bradok.bkp'.log 2>&1
 
-  echo -e "Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída." \
+  echo -e "${COR_TEXTO_BKP}Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída." \
   >> $p'.bradok.bkp'.log
   done <"$USERFILE"
 }
@@ -157,7 +160,7 @@ email_mac() {
                    --password2 'Abc242526@2'              \
                    --nossl2 > $p'.mac-id.bkp'.log 2>&1
 
-  echo -e "Sincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída." \
+  echo -e "${COR_TEXTO_BKP}Sincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída." \
   >> $p'.mac-id.bkp'.log
   done <"$USERFILE"
 }
