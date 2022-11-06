@@ -16,7 +16,7 @@
 # ------------------------------------------------------------------------ #
 # Histórico:
 #
-#   v1.0 29/10/2022, Mateus:
+#   v1.0 06/11/2022, Mateus:
 # ------------------------------------------------------------------------ #
 # Testado em:
 #   bash 5.1.16(1)-release
@@ -46,27 +46,7 @@ MENSAGEM_USO="
 "
 ARQUIVOOK=0
 USERFILE=/tmp/userlist
-
-#Verificar a existência do arquivo que contém os usuários e cria o arquivo caso não exista.
-if [[ -f "$USERFILE" ]]; then
-  ARQUIVOOK=1
-else
-  touch $USERFILE
-  echo "
----------------------------------------------------------------------------------------
-O arquivo $USERFILE foi criado. Por favor, insira os usuários em linhas separadas
-dentro deste arquivo. Consulte -h para verficar as opções de comandos disponíveis.
----------------------------------------------------------------------------------------
-  "
- exit 0
-fi
-
-USERNAME=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
 PASSWORD='$6$5Jtt/TaEHQZoHUeW$Fdyuk3rKUO6eYQPIdnT2PYiZ.9qyXxyiPT7FLehKPZthIrUvy8Ts2.qWlkTq4ZpY0MRvKnp4mv4PVd0LFC.nW1'
-COR_TEXTO_USU="\033[35;1m"
-COR_TEXTO_BKP="\033[36;1;7m"
-
-
 VERSAO="v1.0"
 USU_BRADOK=0
 USU_DADY=0
@@ -76,9 +56,15 @@ BACKUP_BRADOK=0
 BACKUP_DADY=0
 BACKUP_MAC=0
 BACKUP_ALL=0
-
 #-----------------------TESTES--------------------------------------------- #
-
+#Verifica a existência do arquivo que contém os usuários e cria o arquivo caso não exista.
+[ ! -f $USERFILE ] && touch $USERFILE && echo "
+---------------------------------------------------------------------------------------
+O arquivo $USERFILE foi criado. Por favor, insira os usuários em linhas separadas
+dentro deste arquivo. Consulte -h para verficar as opções de comandos disponíveis.
+---------------------------------------------------------------------------------------
+" && exit 0
+USERNAME=$(cat $USERFILE | tr 'A-Z'  'a-z')
 #-----------------------FUNÇÕES-------------------------------------------- #
 
 criar_usuario_mac() {
@@ -87,9 +73,9 @@ criar_usuario_mac() {
              -d /home/$i'.mac-id.bkp'         \
              -p $PASSWORD $i'.mac-id.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
-       echo -e "${COR_TEXTO_USU}Usuário $i'.mac-id.bkp' já existe."
+       echo -e "\e[35;1mUsuário $i'.mac-id.bkp' já existe.\e[0m"
      else
-       echo -e "${COR_TEXTO_USU}Usuário $i'.mac-id.bkp' criado com sucesso!"
+       echo -e "\e[35;1mUsuário $i'.mac-id.bkp' criado com sucesso!\e[0m"
      fi
   done
 }
@@ -100,9 +86,9 @@ criar_usuario_dady() {
              -d /home/$i'.dadyilha.bkp'      \
              -p $PASSWORD $i'.dadyilha.bkp' > /dev/null 2>&1
     if [ $? != 0 ]; then
-      echo -e "${COR_TEXTO_USU}Usuário $i'.dadyilha.bkp' já existe."
+      echo -e "\e[35;1mUsuário $i'.dadyilha.bkp' já existe.\e[0m"
     else
-      echo -e "${COR_TEXTO_USU}Usuário $i'.dadyilha.bkp' criado com sucesso!"
+      echo -e "\e[35;1mUsuário $i'.dadyilha.bkp' criado com sucesso!\e[0m"
     fi
   done
 }
@@ -113,9 +99,9 @@ criar_usuario_bradok() {
              -d /home/$i'.bradok.bkp'       \
              -p $PASSWORD $i'.bradok.bkp' > /dev/null 2>&1
      if [ $? != 0 ]; then
-       echo -e "${COR_TEXTO_USU}Usuário $i'.bradok.bkp' já existe."
+       echo -e "\e[35;1mUsuário $i'.bradok.bkp' já existe.\e[0m"
      else
-       echo -e "${COR_TEXTO_USU}Usuário $i'.bradok.bkp' criado com sucesso!"
+       echo -e "\e[35;1mUsuário $i'.bradok.bkp' criado com sucesso!\e[0m"
      fi
   done
 }
@@ -130,7 +116,7 @@ email_dady() {
                    --password2 'Abc242526@2'              \
                    --nossl2 > $p'.dadyilha.bkp'.log 2>&1
 
-  echo -e "${COR_TEXTO_BKP}Sincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída." \
+  echo -e "\e[36;1;7mSincronização/Backup de e-mails do usuário $p@dadyilha.com.br com o servidor local concuída.\e[0m" \
   >> $p'.dadyilha.bkp'.log
   done < "$USERFILE"
 }
@@ -145,7 +131,7 @@ email_bradok() {
                    --password2 'Abc242526@2'              \
                    --nossl2 > $p'.bradok.bkp'.log 2>&1
 
-  echo -e "${COR_TEXTO_BKP}Sincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída." \
+  echo -e "\e[36;1;7mSincronização/Backup de e-mails do usuário $p@bradok.com.br com o servidor local concuída.\e[0m" \
   >> $p'.bradok.bkp'.log
   done <"$USERFILE"
 }
@@ -160,7 +146,7 @@ email_mac() {
                    --password2 'Abc242526@2'              \
                    --nossl2 > $p'.mac-id.bkp'.log 2>&1
 
-  echo -e "${COR_TEXTO_BKP}Sincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída." \
+  echo -e "\e[36;1;7mSincronização/Backup de e-mails do usuário $p@mac-id.com.br com o servidor local concuída.\e[0m" \
   >> $p'.mac-id.bkp'.log
   done <"$USERFILE"
 }
